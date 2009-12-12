@@ -8,6 +8,7 @@ from cms.plugin_pool import plugin_pool
 
 from cmsplugin_feed.models import Feed
 from cmsplugin_feed.forms import FeedForm
+from cmsplugin_feed.settings import CMSPLUGIN_FEED_CACHE_TIMEOUT
 
 def get_cached_feed(instance):
     """
@@ -15,7 +16,7 @@ def get_cached_feed(instance):
     """
     if not cache.has_key("feed_%s" %instance.id):
         feed = feedparser.parse(instance.feed_url)
-        cache.set("feed_%s" %instance.id, feed, 100)
+        cache.set("feed_%s" %instance.id, feed, CMSPLUGIN_FEED_CACHE_TIMEOUT)
     return cache.get("feed_%s" %instance.id)
 
 class FeedPlugin(CMSPluginBase):
