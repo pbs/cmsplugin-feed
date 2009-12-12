@@ -1,0 +1,6 @@
+<h1>{{ object.name }}</h1>
+
+{% for item in feed.entries %}
+    <h2><a href='{{ item.link}}'>{{ item.title }}</a></h2>
+    {{ item.summary|safe }}
+{% endfor %}
