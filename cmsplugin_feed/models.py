@@ -7,6 +7,9 @@ class Feed(CMSPlugin):
     name = models.CharField(verbose_name=_('name'),max_length=255,
                             null=True, blank=True)
     feed_url = models.URLField(verbose_name=_('feed URL'),verify_exists=True)
+    paginate_by = models.IntegerField(verbose_name="paginate by",
+                                      null=True, blank=True,
+                                      default=5)
 
     def __unicode__(self):
         return self.name
