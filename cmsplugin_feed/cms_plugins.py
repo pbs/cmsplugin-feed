@@ -25,7 +25,7 @@ def get_cached_feed(instance):
 
 class FeedPlugin(CMSPluginBase):
     model = Feed
-    name = _('Feed')
+    name = _('RSS Feed')
     form = FeedForm
     render_template = 'cmsplugin_feed/feed.html'
 
