@@ -28,19 +28,28 @@ class FeedPlugin(CMSPluginBase):
     form = FeedForm
     render_template = 'cmsplugin_feed/feed.html'
 
+    def add_image_hrefs(self, entries):
+        for entry in entries:
+            for link in entry.links:
+                # TODO: search for a cleaner way of determining
+                #       if the mime type is an image
+                if link['type'].startswith('image/'):
+                    entry['image'] = link['href']
+                    break
+
     def render(self, context, instance, placeholder):
         feed = get_cached_feed(instance)
         if not feed:
             entries = []
             is_paginated = False
         else:
+            self.add_image_hrefs(feed["entries"])
             if instance.paginate_by:
                 is_paginated = True
                 request = context['request']
                 feed_page_param = "feed_%s_page" % str(instance.id)
-
                 feed_paginator = Paginator(
-                    feed["entries"], instance.paginate_by)
+                    feed['entries'], instance.paginate_by)
                 # Make sure page request is an int. If not, deliver first page.
                 try:
                     page = int(request.GET.get(feed_page_param, '1'))
@@ -53,7 +62,6 @@ class FeedPlugin(CMSPluginBase):
                     entries = feed_paginator.page(feed_paginator.num_pages)
             else:
                 is_paginated = False
-                entries = feed["entries"]
 
         context.update({
             'instance': instance,
