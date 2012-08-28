@@ -16,10 +16,11 @@ def get_cached_feed(instance):
     """
     get the feed from cache if it exists else fetch it.
     """
-    if "feed_%s" % instance.id in cache:
+    feed_id = "feed_%s" % instance.id
+    if not cache.has_key(feed_id):
         feed = feedparser.parse(instance.feed_url)
-        cache.set("feed_%s" % instance.id, feed, CMSPLUGIN_FEED_CACHE_TIMEOUT)
-    return cache.get("feed_%s" % instance.id)
+        cache.set(feed_id, feed, CMSPLUGIN_FEED_CACHE_TIMEOUT)
+    return cache.get(feed_id)
 
 
 class FeedPlugin(CMSPluginBase):
@@ -29,11 +30,10 @@ class FeedPlugin(CMSPluginBase):
     render_template = 'cmsplugin_feed/feed.html'
 
     def add_image_hrefs(self, entries):
+        supported_image_types = ('image/jpeg', 'image/png')
         for entry in entries:
             for link in entry.links:
-                # TODO: search for a cleaner way of determining
-                #       if the mime type is an image
-                if link['type'].startswith('image/'):
+                if link['type'] in supported_image_types:
                     entry['image'] = link['href']
                     break
 
@@ -62,7 +62,6 @@ class FeedPlugin(CMSPluginBase):
                     entries = feed_paginator.page(feed_paginator.num_pages)
             else:
                 is_paginated = False
-
         context.update({
             'instance': instance,
             'feed_entries': entries,
