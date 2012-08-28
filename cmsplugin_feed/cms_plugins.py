@@ -61,6 +61,7 @@ class FeedPlugin(CMSPluginBase):
                 except (EmptyPage, InvalidPage):
                     entries = feed_paginator.page(feed_paginator.num_pages)
             else:
+                entries = feed["entries"]
                 is_paginated = False
         context.update({
             'instance': instance,
