@@ -1,2 +1,0 @@
-cmsplugin-feed
-==============
