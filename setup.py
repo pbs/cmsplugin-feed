@@ -4,8 +4,8 @@ PACKAGE_DIR = PACKAGE_NAME
 
 import os, sys
 
-from distutils.core import setup
 from distutils.command.install import INSTALL_SCHEMES
+from setuptools import setup, find_packages
 
 def fullsplit(path, result=None):
     """
