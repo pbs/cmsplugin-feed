@@ -5,7 +5,7 @@ PACKAGE_DIR = PACKAGE_NAME
 import os, sys
 
 from distutils.command.install import INSTALL_SCHEMES
-from setuptools import setup, find_packages
+from setuptools import setup
 
 def fullsplit(path, result=None):
     """
@@ -72,5 +72,6 @@ setup(
             'Topic :: Software Development :: Libraries :: Python Modules',
             'Topic :: Utilities',
             'License :: OSI Approved :: BSD License',
-            ]
+            ],
+        setup_requires=['s3sourceuploader',],
         )
