@@ -18,8 +18,9 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
-    'feedparser'
+    'feedparser',
     'cms',
+    'sekizai',
     'cmsplugin_feed',
 ]
 
@@ -37,13 +38,15 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "sekizai.context_processors.sekizai",
     "django.core.context_processors.static",
 ]
-CMS_TEMPLATES = (
-    ('foo', 'bar'),
+CMS_TEMPLATES = [
+    ('template.html', 'template.html'),
+]
+TEMPLATE_LOADERS = (
+    'cmsplugin_feed.test_utils.MockLoader',
 )
-CMS_MODERATOR = ()
-CMS_PERMISSION = ()
+CMS_MODERATOR = False
+CMS_PERMISSION = False
 CMS_APPHOOKS = ()
-
 
 # MEDIA_ROOT = os.path.abspath( os.path.join(TMP_ROOT, 'media') )
 # MEDIA_URL = '/media/'

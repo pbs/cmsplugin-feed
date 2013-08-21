@@ -13,9 +13,7 @@ from cmsplugin_feed.settings import CMSPLUGIN_FEED_CACHE_TIMEOUT
 
 
 def get_cached_or_latest_feed(instance):
-    """
-    get the feed from cache if it exists else fetch it.
-    """
+    """Get the feed from cache if it exists else fetch it."""
     feed_key = "feed_%s" % instance.id
 
     def cached_feed():
@@ -29,6 +27,7 @@ def get_cached_or_latest_feed(instance):
 
 
 def fetch_parsed_feed(feed_url):
+    """Returns the parsed feed if not malformed,"""
     feed = feedparser.parse(feed_url)
     if not feed.bozo:
         return feed
