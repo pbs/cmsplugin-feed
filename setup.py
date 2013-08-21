@@ -1,11 +1,18 @@
 #!/usr/bin/env python
 PACKAGE_NAME = 'cmsplugin_feed'
 PACKAGE_DIR = PACKAGE_NAME
+DEPENDENCIES = [
+    'django >=1.4.1, <1.5',
+    'django-cms >=2.3.1, <2.3.6',
+    'feedparser >=5.1.1',
+]
+
 
 import os, sys
 
 from distutils.command.install import INSTALL_SCHEMES
 from setuptools import setup
+
 
 def fullsplit(path, result=None):
     """
@@ -20,6 +27,8 @@ def fullsplit(path, result=None):
     if head == path:
         return result
     return fullsplit(head, [tail] + result)
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
 
 # Tell disutils to put the data_files in platofmr-specific installation
 # locations.
@@ -52,6 +61,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'bdist_wininst':
 # Dynamically calculate the version based on package.VERSION
 version = __import__(PACKAGE_NAME).get_version()
 
+
 setup(
         name='cmsplugin-feed',
         version=version.replace(' ', '-'),
@@ -73,5 +83,12 @@ setup(
             'Topic :: Utilities',
             'License :: OSI Approved :: BSD License',
             ],
-        setup_requires=['s3sourceuploader',],
-        )
+        setup_requires=[
+            's3sourceuploader',
+            'nose',
+        ],
+        install_requires=DEPENDENCIES,
+        tests_require=[
+            'mock',
+        ] + DEPENDENCIES,
+)

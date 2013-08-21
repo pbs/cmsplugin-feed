@@ -12,15 +12,26 @@ from cmsplugin_feed.forms import FeedForm
 from cmsplugin_feed.settings import CMSPLUGIN_FEED_CACHE_TIMEOUT
 
 
-def get_cached_feed(instance):
+def get_cached_or_latest_feed(instance):
     """
     get the feed from cache if it exists else fetch it.
     """
-    feed_id = "feed_%s" % instance.id
-    if not cache.has_key(feed_id):
-        feed = feedparser.parse(instance.feed_url)
-        cache.set(feed_id, feed, CMSPLUGIN_FEED_CACHE_TIMEOUT)
-    return cache.get(feed_id)
+    feed_key = "feed_%s" % instance.id
+
+    def cached_feed():
+        return cache.get(feed_key)
+
+    def updated_feed():
+        valid_parsed_feed = fetch_parsed_feed(instance.feed_url)
+        cache.set(feed_key, valid_parsed_feed, CMSPLUGIN_FEED_CACHE_TIMEOUT)
+        return valid_parsed_feed
+    return cached_feed() or updated_feed()
+
+
+def fetch_parsed_feed(feed_url):
+    feed = feedparser.parse(feed_url)
+    if not feed.bozo:
+        return feed
 
 
 class FeedPlugin(CMSPluginBase):
@@ -38,7 +49,7 @@ class FeedPlugin(CMSPluginBase):
                     break
 
     def render(self, context, instance, placeholder):
-        feed = get_cached_feed(instance)
+        feed = get_cached_or_latest_feed(instance)
         if not feed:
             entries = []
             is_paginated = False
@@ -55,7 +66,8 @@ class FeedPlugin(CMSPluginBase):
                     page = int(request.GET.get(feed_page_param, '1'))
                 except ValueError:
                     page = 1
-                # If page request (9999) is out of range, deliver last page of results.
+                # If page request (9999) is out of range, deliver last page of
+                # results.
                 try:
                     entries = feed_paginator.page(page)
                 except (EmptyPage, InvalidPage):
@@ -68,7 +80,7 @@ class FeedPlugin(CMSPluginBase):
             'feed_entries': entries,
             'is_paginated': is_paginated,
             'placeholder': placeholder,
-            })
+        })
         return context
 
 plugin_pool.register_plugin(FeedPlugin)
