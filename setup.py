@@ -28,8 +28,6 @@ def fullsplit(path, result=None):
         return result
     return fullsplit(head, [tail] + result)
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
-
 # Tell disutils to put the data_files in platofmr-specific installation
 # locations.
 for scheme in INSTALL_SCHEMES.values():
@@ -85,10 +83,12 @@ setup(
             ],
         setup_requires=[
             's3sourceuploader',
-            'nose',
         ],
         install_requires=DEPENDENCIES,
         tests_require=[
             'mock',
+            'parse',
+            'django-nose',
         ] + DEPENDENCIES,
+        test_suite='runtests.runtests',
 )

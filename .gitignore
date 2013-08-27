@@ -2,4 +2,5 @@
 dist
 *.egg-info
 *.egg
+nosetest.xml
 build

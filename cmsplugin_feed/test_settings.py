@@ -7,14 +7,15 @@ TMP_ROOT = tempfile.gettempdir()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(TMP_ROOT,'cmsplugin_feed_test.sqlite3'),
-        },
-    }
+        'NAME': os.path.join(TMP_ROOT, 'cmsplugin_feed_test.sqlite3'),
+    },
+}
 INSTALLED_APPS = [
     'mptt',
     'south',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
@@ -52,4 +53,3 @@ CMS_APPHOOKS = ()
 # MEDIA_URL = '/media/'
 # STATIC_URL = '/static/'
 SECRET_KEY = '3e7704d1-eb82-43dc-b322-a41e7972a060'
-
