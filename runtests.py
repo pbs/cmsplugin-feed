@@ -8,7 +8,7 @@ sys.path.insert(0, dirname(abspath(__file__)))
 
 from django.conf import settings
 if not settings.configured:
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'cmsplugin_feed.test_settings'
 
 from django_nose import NoseTestSuiteRunner
 
@@ -17,7 +17,7 @@ class TestsWrapper(unittest.TestCase):
     def __init__(self, *test_args, **kwargs):
         super(TestsWrapper, self).__init__()
         if not settings.configured:
-            os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
+            os.environ['DJANGO_SETTINGS_MODULE'] = 'cmsplugin_feed.test_settings'
         if 'south' in settings.INSTALLED_APPS:
             from south.management.commands import patch_for_test_db_setup
             patch_for_test_db_setup()

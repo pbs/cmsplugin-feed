@@ -87,7 +87,6 @@ setup(
         install_requires=DEPENDENCIES,
         tests_require=[
             'mock',
-            'parse',
             'django-nose',
         ] + DEPENDENCIES,
         test_suite='runtests.runtests',
