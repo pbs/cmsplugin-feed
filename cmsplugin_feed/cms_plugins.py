@@ -1,4 +1,5 @@
 import feedparser
+from xml.sax import SAXException
 
 from django.utils.translation import ugettext as _
 from django.core.cache import cache
@@ -29,7 +30,9 @@ def get_cached_or_latest_feed(instance):
 def fetch_parsed_feed(feed_url):
     """Returns the parsed feed if not malformed,"""
     feed = feedparser.parse(feed_url)
-    if not feed.bozo:
+    parse_error = hasattr(feed, 'bozo_exception') and (
+        isinstance(feed.bozo_exception, SAXException))
+    if not feed.bozo or not parse_error:
         return feed
 
 
