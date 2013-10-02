@@ -29,7 +29,9 @@ def get_cached_or_latest_feed(instance):
 def fetch_parsed_feed(feed_url):
     """Returns the parsed feed if not malformed,"""
     feed = feedparser.parse(feed_url)
-    if not feed.bozo:
+    encoding_override = hasattr(feed, 'bozo_exception') and (
+        isinstance(feed.bozo_exception, feedparser.CharacterEncodingOverride))
+    if not feed.bozo or encoding_override:
         return feed
 
 
