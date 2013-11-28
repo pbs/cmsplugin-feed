@@ -4,3 +4,4 @@ dist
 *.egg
 nosetest.xml
 build
+echo .tox
