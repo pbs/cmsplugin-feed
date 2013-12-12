@@ -2,6 +2,6 @@
 dist
 *.egg-info
 *.egg
-nosetest.xml
+unittest-results.xml
 build
-echo .tox
+.tox

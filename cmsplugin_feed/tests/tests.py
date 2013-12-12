@@ -3,7 +3,7 @@ import mock
 from nose.tools import assert_true
 from xml.sax import SAXException
 from feedparser import CharacterEncodingOverride
-from .cms_plugins import fetch_parsed_feed
+from ..cms_plugins import fetch_parsed_feed
 
 
 def test_handle_bozo_feed():
