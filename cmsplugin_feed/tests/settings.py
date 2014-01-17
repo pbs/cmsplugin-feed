@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'cmsplugin_feed',
 ]
 
-ROOT_URLCONF = 'test_urls'
+ROOT_URLCONF = 'tests.urls'
 
 TEMPLATE_CONTEXT_PROCESSORS = [
     "django.contrib.auth.context_processors.auth",
@@ -43,7 +43,7 @@ CMS_TEMPLATES = [
     ('template.html', 'template.html'),
 ]
 TEMPLATE_LOADERS = (
-    'cmsplugin_feed.test_utils.MockLoader',
+    'cmsplugin_feed.tests.utils.MockLoader',
 )
 CMS_MODERATOR = False
 CMS_PERMISSION = False

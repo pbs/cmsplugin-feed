@@ -2,6 +2,6 @@
 dist
 *.egg-info
 *.egg
-nosetest.xml
-build
-echo .tox
+nose-results.xml
+pytest-results.xml
+.tox
