@@ -45,10 +45,13 @@ class FeedPlugin(CMSPluginBase):
     def add_image_hrefs(self, entries):
         supported_image_types = ('image/jpeg', 'image/png')
         for entry in entries:
-            for link in entry.links:
-                if link['type'] in supported_image_types:
-                    entry['image'] = link['href']
+            if 'image' not in entry:
+                for link in entry.links:
+                    if link['type'] in supported_image_types:
+                        entry['image'] = link['href']
                     break
+            elif isinstance(entry['image'], dict) and 'href' in entry['image']:
+                entry['image'] = entry['image'].get('href')
 
     def render(self, context, instance, placeholder):
         feed = get_cached_or_latest_feed(instance)
