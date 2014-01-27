@@ -5,8 +5,9 @@ def apply(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         feed = f(*args, **kwargs)
-        for fproc in FEED_PROCESSORS:
-            feed = fproc(feed)
+        if feed:
+            for fproc in FEED_PROCESSORS:
+                feed = fproc(feed)
         return feed
     return wrapper
 
