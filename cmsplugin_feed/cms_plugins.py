@@ -12,6 +12,8 @@ from cmsplugin_feed.models import Feed
 from cmsplugin_feed.forms import FeedForm
 from cmsplugin_feed.settings import CMSPLUGIN_FEED_CACHE_TIMEOUT
 
+import cmsplugin_feed.processors
+
 
 def get_cached_or_latest_feed(instance):
     """Get the feed from cache if it exists else fetch it."""
@@ -27,6 +29,7 @@ def get_cached_or_latest_feed(instance):
     return cached_feed() or updated_feed()
 
 
+@cmsplugin_feed.processors.apply
 def fetch_parsed_feed(feed_url):
     """Returns the parsed feed if not malformed,"""
     feed = feedparser.parse(feed_url)
@@ -42,21 +45,12 @@ class FeedPlugin(CMSPluginBase):
     form = FeedForm
     render_template = 'cmsplugin_feed/feed.html'
 
-    def add_image_hrefs(self, entries):
-        supported_image_types = ('image/jpeg', 'image/png')
-        for entry in entries:
-            for link in entry.links:
-                if link['type'] in supported_image_types:
-                    entry['image'] = link['href']
-                    break
-
     def render(self, context, instance, placeholder):
         feed = get_cached_or_latest_feed(instance)
         if not feed:
             entries = []
             is_paginated = False
         else:
-            self.add_image_hrefs(feed["entries"])
             if instance.paginate_by:
                 is_paginated = True
                 request = context['request']
