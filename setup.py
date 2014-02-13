@@ -56,13 +56,9 @@ if len(sys.argv) > 1 and sys.argv[1] == 'bdist_wininst':
     for file_info in data_files:
         file_info[0] = '\\PURELIB\\%s' % file_info[0]
 
-# Dynamically calculate the version based on package.VERSION
-version = __import__(PACKAGE_NAME).get_version()
-
-
 setup(
         name='cmsplugin-feed',
-        version=version.replace(' ', '-'),
+        version='0.2.0.pbs',
         description='Adds a plugin based MarkUp System for django-cms',
         author='Yann Malet, gwadeloop',
         author_email='yann.malet@gmail.com',
