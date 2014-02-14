@@ -21,7 +21,7 @@ class CMSPluginFeedTests(TestCase):
         with mock.patch('feedparser.parse') as mock_parse:
             mock_parse.return_value = mock.Mock(
                 bozo=1, bozo_exception=CharacterEncodingOverride())
-            mock_parse.return_value.__getitem__ = lambda name: []
+            mock_parse.return_value.__getitem__ = lambda x, y: []
             feed = fetch_parsed_feed(feed_url)
             self.assertTrue(feed is not None)
 
@@ -29,6 +29,6 @@ class CMSPluginFeedTests(TestCase):
         feed_url = 'url_to_good_feed'
         with mock.patch('feedparser.parse') as mock_parse:
             mock_parse.return_value = mock.Mock(bozo=0)
-            mock_parse.return_value.__getitem__ = lambda name: []
+            mock_parse.return_value.__getitem__ = lambda x, y: []
             feed = fetch_parsed_feed(feed_url)
             self.assertTrue(feed is not None)
