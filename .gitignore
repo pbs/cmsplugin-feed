@@ -6,3 +6,4 @@ nose-results.xml
 pytest-results.xml
 .tox
 *.pyo
+full.log
