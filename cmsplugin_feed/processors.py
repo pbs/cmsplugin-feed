@@ -18,9 +18,9 @@ def add_image_hrefs(feed):
     entries = feed['entries']
     for entry in entries:
         if 'image' not in entry:
-            for link in entry.links:
-                if link['type'] in supported_image_types:
-                    entry['image'] = link['href']
+            for link in entry.get('links', []):
+                if link.get('type') in supported_image_types:
+                    entry['image'] = link.get('href')
                     break
         elif isinstance(entry['image'], dict) and 'href' in entry['image']:
             entry['image'] = entry['image'].get('href')
