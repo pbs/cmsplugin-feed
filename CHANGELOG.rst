@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+Revision 7535b33 (06.08.2014, 13:40 UTC)
+----------------------------------------
+
+* LUN-1758
+
+  * added default value for cases when links are missing.
+
+No other commits.
+
 Revision 87e9722 (03.07.2014, 07:26 UTC)
 ----------------------------------------
 
