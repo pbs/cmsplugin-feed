@@ -1,0 +1,14 @@
+{% load truncatechars help %}
+  <div class="media">
+        {% if item.image %}
+            <a href="{{item.link}}" class="img" style="float:left;">
+            <div style="width:113px; height:64px;">
+              <img src='{{item.image}}' alt="" style="max-width:100%; max-height: 100%">
+            </div>
+            </a>
+        {% endif %}
+    <div class="bd"  {% if item.image %} style="margin-left:120px;" {% endif %}>
+      <span><a class="taxonomy" href='{{item.link}}'> {{ item.title }}</a></span>
+      <p class="description">fifi baston{{ item.summary|truncatechars:200|safe }}</p>
+    </div>
+  </div>
