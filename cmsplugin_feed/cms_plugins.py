@@ -13,6 +13,8 @@ from cmsplugin_feed.forms import FeedForm
 from cmsplugin_feed.settings import CMSPLUGIN_FEED_CACHE_TIMEOUT
 
 import cmsplugin_feed.processors
+from HTMLParser import HTMLParser
+import BeautifulSoup
 
 
 def get_cached_or_latest_feed(instance):
@@ -71,6 +73,11 @@ class FeedPlugin(CMSPluginBase):
             else:
                 entries = feed["entries"]
                 is_paginated = False
+
+        for e in entries:
+            e['image'] = get_image(e['summary'])
+            e['summary'] = strip_tags(e['summary'])
+
         context.update({
             'instance': instance,
             'feed_entries': entries,
@@ -78,5 +85,29 @@ class FeedPlugin(CMSPluginBase):
             'placeholder': placeholder,
         })
         return context
+
+
+class MLStripper(HTMLParser):
+    def __init__(self):
+        self.reset()
+        self.fed = []
+
+    def handle_data(self, d):
+        self.fed.append(d)
+
+    def get_data(self):
+        return ''.join(self.fed)
+
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
+
+
+def get_image(raw_html):
+    tree = BeautifulSoup.BeautifulSoup(raw_html)
+    img = tree.find('img')
+    return img.get('src') if img else None
 
 plugin_pool.register_plugin(FeedPlugin)
