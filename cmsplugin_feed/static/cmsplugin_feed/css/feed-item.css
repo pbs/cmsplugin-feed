@@ -4,6 +4,9 @@
     color: #005f8f;
     padding-bottom: 15px;
 }
+.feed-item-titletop{
+    clear: left; display: block; 
+}
 .feed-item-description{
     font-size: 12px;
     line-height: 20px;
@@ -17,7 +20,7 @@
 .feed-item-entry{
     background-color: white;
     /* border : 1px dashed black; */
-    padding: 15px 15px 20px 15px;
+    padding-bottom: 20px;
 }
 .feed-item-image-credit{
     font-style: italic;
@@ -52,4 +55,6 @@
     background-color: green;
     display: none;
 }
-span.feed-item-clear { clear: left; display: block; }
+span.feed-item-clear{
+    clear: left; display: block; 
+}
