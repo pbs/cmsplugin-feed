@@ -40,100 +40,108 @@ def fetch_parsed_feed(feed_url):
     if not feed.bozo or not parse_error:
         return feed
 
+import re
+def mini(x):
+    if not x:
+        return ""
+    x = re.sub("\n+", " ", x)
+    x = re.sub("\r+", " ", x)
+    x = filter(lambda x: x not in "\n\t\r", x)
+    x = re.sub(" +", " ", x).strip()
+    return x
+
+def toString(branch):
+    ret = mini(strip_tags(str(branch)))
+    return ret
+
+
 def gimme_credit(summary):
     import pickle
-    from BeautifulSoup import BeautifulSoup  
+    from BeautifulSoup import BeautifulSoup
     from textblob import TextBlob
-    from urlparse import urlparse                                                   
-    from HTMLParser import HTMLParser                                               
-    from itertools import chain  
+    from urlparse import urlparse
+    from HTMLParser import HTMLParser
+    from itertools import chain
     import re
 
-    class MLStripper(HTMLParser):                                                   
-        def __init__(self):                                                         
-            self.reset()                                                            
-            self.fed = []                                                           
-                                                                                    
-        def handle_data(self, d):                                                   
-            self.fed.append(d)                                                      
-                                                                                    
-        def get_data(self):                                                         
-            return ''.join(self.fed)                                                
-                                                                                    
-                                                                                    
-    def strip_tags(html):                                                           
-        s = MLStripper()                                                            
-        s.feed(html.decode('ascii', 'ignore'))                                      
-        return s.get_data()   
+    class MLStripper(HTMLParser):
+        def __init__(self):
+            self.reset()
+            self.fed = []
 
-    def mini(x):                                                                    
-        if not x:                                                                   
-            return ""                                                               
-        x = re.sub("\n+", " ", x)                                                   
-        x = re.sub("\r+", " ", x)                                                   
-        x = filter(lambda x: x not in "\n\t\r", x)                                  
-        x = re.sub(" +", " ", x).strip()                                            
-        return x                                                                    
+        def handle_data(self, d):
+            self.fed.append(d)
 
-    def minib(branch):                                                              
-        ret = mini(strip_tags(str(branch)))                                         
-        return ret                                                                  
-            
-    def valid_img_ext(path):                                                        
-        return (path[-3:].lower() in ['jpg', 'bmp', 'gif', 'png'] or                
-                path[-4:].lower() == "jpeg")                                        
-                                                                                    
-    def has_verb(stuff):                                                            
-        blob = TextBlob(stuff)                                                      
-        return len([a for a, b in blob.tags if b[:2] == "VB"]) >= 1  # improve  
-        return "asd"
+        def get_data(self):
+            return ''.join(self.fed)
 
-    def hotkey(stuff):                                                              
-        crap = ["via ",                                                             
-                "illustrated ", "photo ", "image credit:", "credit:", "image "]     
-        for c in crap:                                                              
-            pos = stuff.lower().find(c)                                             
-            if pos != -1:                                                           
-                stuff = stuff[pos:]                                                 
-                break                                                               
-        return stuff
+    def strip_tags(html):
+        s = MLStripper()
+        s.feed(html.decode('ascii', 'ignore')) #no idea why decode works 
+        return s.get_data()
 
-    def propget(stuff):                                                             
-        if has_verb(stuff):                                                         
-            stuff = hotkey(stuff)                                                   
-            if has_verb(stuff):                                                     
-                return ""                                                           
-        return stuff   
+    def valid_img_ext(path):
+        image_types = ['bpm', 'gif', 'jpeg', 'jpg', 'png', 'tif', 'tiff']
+        path_ending = path[-4:].lower()
+        for img_type in image_types: 
+            if path_ending.endswith(img_type):
+                return True
+        return False
 
-    tree = BeautifulSoup(summary)                                                        
+    def has_verb(line):
+        line = line.decode('ascii', 'ignore') #no idea why decode works
+        blob = TextBlob(line)
+        for word, part_of_speech_tag in blob.tags:
+            if part_of_speech_tag[:2] == "VB":
+                return True
+        return False
 
-    img = None                                                                      
-    for x in tree.findAll('img'):                                                   
-        if valid_img_ext(urlparse(x.get('src')).path):                              
-            img = x                                                                 
-        break                                                                       
-    if img:                                                                         
-        branch = img                                                                
-        while (not (minib(branch)) and                                              
-                   (branch.nextSibling or                                           
-                    branch.parent)):                                                
-            while not (minib(branch)) and branch.nextSibling:                       
-                branch = branch.nextSibling                                         
-            if not (minib(branch)) and branch.parent:                               
-                branch = branch.parent                                              
-        stuff = minib(branch)                                                       
-        if stuff:                                                                   
-            while minib(''.join(map(str, img.nextSiblingGenerator()))).find(stuff) == -1 and img.parent:
-                img = img.parent                                                    
-            pos = minib(''.join(map(str, img.nextSiblingGenerator()))).find(stuff)  
-            if pos != 0:                                                            
-                return ""                                                           
-        if not stuff:                                                               
-            return ""                                                               
-        stuff = propget(stuff)                                                      
-        stuff = stuff.lstrip(" ;")                                                  
-        return stuff                                                                
-    return ""   
+    def slice_from_keywords(line):
+        line_lower = line.lower()
+        keywords = ["via ", "illustrated ", "photo ", "image credit:", "credit:", "image "]
+        minimum = len(line)
+        for keyword in keywords:
+            pos = line_lower.find(keyword)
+            if pos != -1 and pos < minimum:
+                minimum = pos
+
+        if minimum != len(line):
+            return line[minimum:]
+        return line
+
+    def filter_sentence(line):
+        credit = slice_from_keywords(line)
+        if has_verb(credit):
+            return "", ""
+        return line, credit
+
+    def get_valid_image_node(summary):
+        tree = BeautifulSoup(summary)
+        for node in tree.findAll('img'):
+            if valid_img_ext(urlparse(node.get('src')).path):
+                return node
+        return None 
+
+    img = get_valid_image_node(summary)
+    if img:
+        branch = img
+        while (not (toString(branch)) and
+                   (branch.nextSibling or
+                    branch.parent)):
+            while not (toString(branch)) and branch.nextSibling:
+                branch = branch.nextSibling
+            if not (toString(branch)) and branch.parent:
+                branch = branch.parent
+        stuff = toString(branch)
+
+        if not stuff:
+            return ("", "")
+
+        line, credit = filter_sentence(stuff)
+        credit = credit.lstrip(" ;")
+        return (line, credit)
+    return ("", "")
+
 
 class FeedPlugin(CMSPluginBase):
     model = Feed
@@ -170,9 +178,9 @@ class FeedPlugin(CMSPluginBase):
 
         for e in entries:
             e['image'] = get_image(e['summary'])
-            e['credit'] = gimme_credit(e['summary'])
-            e['summary'] = strip_tags(e['summary'])
-            
+            line, credit = gimme_credit(e['summary'])
+            e['credit'] = credit
+            e['summary'] = toString(e['summary'].encode('ascii','ignore')).replace(line, "") #no idea why encode works
 
         context.update({
             'instance': instance,
