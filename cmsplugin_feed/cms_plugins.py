@@ -40,6 +40,100 @@ def fetch_parsed_feed(feed_url):
     if not feed.bozo or not parse_error:
         return feed
 
+def gimme_credit(summary):
+    import pickle
+    from BeautifulSoup import BeautifulSoup  
+    from textblob import TextBlob
+    from urlparse import urlparse                                                   
+    from HTMLParser import HTMLParser                                               
+    from itertools import chain  
+    import re
+
+    class MLStripper(HTMLParser):                                                   
+        def __init__(self):                                                         
+            self.reset()                                                            
+            self.fed = []                                                           
+                                                                                    
+        def handle_data(self, d):                                                   
+            self.fed.append(d)                                                      
+                                                                                    
+        def get_data(self):                                                         
+            return ''.join(self.fed)                                                
+                                                                                    
+                                                                                    
+    def strip_tags(html):                                                           
+        s = MLStripper()                                                            
+        s.feed(html.decode('ascii', 'ignore'))                                      
+        return s.get_data()   
+
+    def mini(x):                                                                    
+        if not x:                                                                   
+            return ""                                                               
+        x = re.sub("\n+", " ", x)                                                   
+        x = re.sub("\r+", " ", x)                                                   
+        x = filter(lambda x: x not in "\n\t\r", x)                                  
+        x = re.sub(" +", " ", x).strip()                                            
+        return x                                                                    
+
+    def minib(branch):                                                              
+        ret = mini(strip_tags(str(branch)))                                         
+        return ret                                                                  
+            
+    def valid_img_ext(path):                                                        
+        return (path[-3:].lower() in ['jpg', 'bmp', 'gif', 'png'] or                
+                path[-4:].lower() == "jpeg")                                        
+                                                                                    
+    def has_verb(stuff):                                                            
+        blob = TextBlob(stuff)                                                      
+        return len([a for a, b in blob.tags if b[:2] == "VB"]) >= 1  # improve  
+        return "asd"
+
+    def hotkey(stuff):                                                              
+        crap = ["via ",                                                             
+                "illustrated ", "photo ", "image credit:", "credit:", "image "]     
+        for c in crap:                                                              
+            pos = stuff.lower().find(c)                                             
+            if pos != -1:                                                           
+                stuff = stuff[pos:]                                                 
+                break                                                               
+        return stuff
+
+    def propget(stuff):                                                             
+        if has_verb(stuff):                                                         
+            stuff = hotkey(stuff)                                                   
+            if has_verb(stuff):                                                     
+                return ""                                                           
+        return stuff   
+
+    tree = BeautifulSoup(summary)                                                        
+
+    img = None                                                                      
+    for x in tree.findAll('img'):                                                   
+        if valid_img_ext(urlparse(x.get('src')).path):                              
+            img = x                                                                 
+        break                                                                       
+    if img:                                                                         
+        branch = img                                                                
+        while (not (minib(branch)) and                                              
+                   (branch.nextSibling or                                           
+                    branch.parent)):                                                
+            while not (minib(branch)) and branch.nextSibling:                       
+                branch = branch.nextSibling                                         
+            if not (minib(branch)) and branch.parent:                               
+                branch = branch.parent                                              
+        stuff = minib(branch)                                                       
+        if stuff:                                                                   
+            while minib(''.join(map(str, img.nextSiblingGenerator()))).find(stuff) == -1 and img.parent:
+                img = img.parent                                                    
+            pos = minib(''.join(map(str, img.nextSiblingGenerator()))).find(stuff)  
+            if pos != 0:                                                            
+                return ""                                                           
+        if not stuff:                                                               
+            return ""                                                               
+        stuff = propget(stuff)                                                      
+        stuff = stuff.lstrip(" ;")                                                  
+        return stuff                                                                
+    return ""   
 
 class FeedPlugin(CMSPluginBase):
     model = Feed
@@ -76,7 +170,9 @@ class FeedPlugin(CMSPluginBase):
 
         for e in entries:
             e['image'] = get_image(e['summary'])
+            e['credit'] = gimme_credit(e['summary'])
             e['summary'] = strip_tags(e['summary'])
+            
 
         context.update({
             'instance': instance,
