@@ -5,7 +5,8 @@
     padding-bottom: 15px;
 }
 .feed-item-titletop{
-    clear: left; display: block; 
+    clear: left;
+    display: block;
 }
 .feed-item-description{
     font-size: 12px;
@@ -19,7 +20,6 @@
 }
 .feed-item-entry{
     background-color: white;
-    /* border : 1px dashed black; */
     padding-bottom: 20px;
 }
 .feed-item-image-credit{
@@ -37,12 +37,8 @@
     line-height: 20px;
     color: #767676;
 }
-.feed-item-container {
- /*   width: 320px; */
-}
 .feed-item-le479px .feed-item-titleinline /* less or equal */
 {
-    background-color: red;
     display: none;
 }
 .feed-item-le320px .feed-item-image
@@ -52,9 +48,9 @@
 
 .feed-item-ge480px .feed-item-titletop
 {
-    background-color: green;
     display: none;
 }
 span.feed-item-clear{
-    clear: left; display: block; 
+    clear: left;
+    display: block;
 }
