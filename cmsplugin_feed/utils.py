@@ -20,7 +20,7 @@ class MLStripper(HTMLParser):
 
 def strip_tags(html):
     s = MLStripper()
-    s.feed(html.decode('ascii', 'ignore'))  # no idea why decode works
+    s.feed(html)
     return s.get_data()
 
 
@@ -35,7 +35,7 @@ def mini(x):
 
 
 def toString(branch):
-    ret = mini(strip_tags(str(branch)))
+    ret = mini(strip_tags(unicode(branch)))
     return ret
 
 
@@ -49,7 +49,6 @@ def get_line_credit(summary):
         return False
 
     def has_verb(line):
-        line = line.decode('ascii', 'ignore')  # no idea why decode works
         blob = TextBlob(line)
         for word, part_of_speech_tag in blob.tags:
             if part_of_speech_tag[:2] == "VB":
@@ -107,7 +106,7 @@ def get_line_credit(summary):
 
 def get_credit_summary(summary):
     line, credit = get_line_credit(summary)
-    return credit, toString(summary.encode('ascii', 'ignore')).replace(line, "")  # no idea why encode
+    return credit, toString(summary).replace(line, "")
 
 
 def get_image(raw_html):
