@@ -1,36 +1,33 @@
+{% load sekizai_tags %}
+{% addtoblock "css" %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/cmsplugin_feed/css/feed.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/cmsplugin_feed/css/feed-item.css">
+{% endaddtoblock %}
+{% addtoblock "js" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}/cmsplugin_feed/js/responsive-containers.min.js"></script>
+{% endaddtoblock %}
+
 {% if feed_entries %}
   <div class="media-feed clearfix">
     <h2 class="feed-title">{{ instance.name }}</h2>
 
-      {% if is_paginated%}
-        {% for item in feed_entries.object_list %}
+    {% if is_paginated %}
+      {% for item in feed_entries.object_list %}
 
-            {% if forloop.counter0|divisibleby:"2" %}
-                <div class="clearfix">
-            {% endif %}
 
-            {% include "cmsplugin_feed/item.html" %}
+          {% include "cmsplugin_feed/item.html" %}
 
-            {% if forloop.last or not forloop.counter0|divisibleby:"2" %}
-                </div>
-            {% endif %}
 
-        {% endfor %}
-      {% else %}
-        {% for item in feed_entries %}
+      {% endfor %}
+    {% else %}
+      {% for item in feed_entries %}
 
-            {% if forloop.counter0|divisibleby:"2" %}
-                <div class="clearfix">
-            {% endif %}
 
-            {% include "cmsplugin_feed/item.html" %}
+          {% include "cmsplugin_feed/item.html" %}
 
-            {% if forloop.last or not forloop.counter0|divisibleby:"2" %}
-                </div>
-            {% endif %}
 
-        {% endfor %}
-      {% endif %}
+      {% endfor %}
+    {% endif %}
 
   </div>
 {% endif %}
