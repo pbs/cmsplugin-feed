@@ -25,12 +25,12 @@ def strip_tags(html):
     return s.get_data()
 
 
-def toString(node):
+def to_string(node):
     ret = re.sub(u"\s+",strip_tags(unicode(node))," ").strip()
     return ret
 
 
-def valid_img_ext(path):
+def is_valid_img_ext(path):
     image_types = ('bmp', 'gif', 'jpeg', 'jpg', 'png', 'tif', 'tiff')
     return  os.path.splitext(path)[1][1:] in image_types
 
@@ -68,39 +68,40 @@ def filter_sentence(line):
 def get_valid_image_node(summary):
     tree = BeautifulSoup(summary)
     for node in tree.findAll('img'):
-        if valid_img_ext(urlparse(node.get('src')).path):
+        if is_valid_img_ext(urlparse(node.get('src')).path):
             return node
     return None
 
-def get_line_credit(summary):
+def get_image_line_credit(summary): #return whole image, parsing might have to be done
     img = get_valid_image_node(summary)
     if img:
         node = img
 
         # traverse following siblings,
         # then go up one level until a string is found
-        while (not (toString(node)) and (node.nextSibling or node.parent)):
-            while not (toString(node)) and node.nextSibling:
+        while (not (to_string(node)) and (node.nextSibling or node.parent)):
+            while not (to_string(node)) and node.nextSibling:
                 node = node.nextSibling
-            if not (toString(node)) and node.parent:
+            if not (to_string(node)) and node.parent:
                 node = node.parent
-        stuff = toString(node)
+        text = to_string(node)
 
-        if not stuff:
-            return ("", "")
+        if not text:
+            return (None, "", "")
 
-        line, credit = filter_sentence(stuff)
+        line, credit = filter_sentence(text)
         credit = credit.lstrip(" ;")
-        return (line, credit)
-    return ("", "")
+        return (img, line, credit)
+    return (None, "", "")
 
 
-def get_credit_summary(summary):
-    line, credit = get_line_credit(summary)
-    return credit, toString(summary).replace(line, "")
+def get_image_summary_credit(summary):
+    image, line, credit = get_image_line_credit(summary)
+    cleaned_summary = to_string(summary).replace(line, "")
+    return image, cleaned_summary , credit
 
 
-def get_image(raw_html):
-    tree = BeautifulSoup(raw_html)
-    img = tree.find('img')
-    return img.get('src') if img else None
+#def get_image(raw_html):
+#    tree = BeautifulSoup(raw_html)
+#    img = tree.find('img')
+#    return img.get('src') if img else None

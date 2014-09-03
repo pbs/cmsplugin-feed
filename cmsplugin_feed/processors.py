@@ -1,4 +1,5 @@
 from functools import wraps
+from cmsplugin_feed.utils import get_image_summary_credit
 
 
 def apply(f):
@@ -27,6 +28,24 @@ def add_image_hrefs(feed):
     return feed
 
 
-FEED_PROCESSORS = (add_image_hrefs,)
+def fix_content(feed):
+    entries = feed['entries']
+    for entry in entries:
+        image, summary, credit = get_image_summary_credit(entry['summary'])
+        entry['summary'] = summary
+        entry['image_from_summary'] = image
+        entry['credit_from_summary'] = credit
+    return feed
 
+def set_image(feed):
+    entries = feed['entries']
+    for entry in entries:
+        if not 'image' in entry:
+            # insert heuristic to choose image here, when there will be multiple images to choose from
+            if entry['image_from_summary']:
+                entry['image'] = entry['image_from_summary'].get('src')
+                entry['credit'] = entry['credit_from_summary']
+    return feed
 
+# leave the processor order as it is!!!
+FEED_PROCESSORS = (add_image_hrefs, fix_content, set_image)

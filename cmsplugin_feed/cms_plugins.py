@@ -13,7 +13,6 @@ from cmsplugin_feed.forms import FeedForm
 from cmsplugin_feed.settings import CMSPLUGIN_FEED_CACHE_TIMEOUT
 
 import cmsplugin_feed.processors
-from cmsplugin_feed.utils import get_image, get_credit_summary
 
 
 def get_cached_or_latest_feed(instance):
@@ -72,10 +71,6 @@ class FeedPlugin(CMSPluginBase):
             else:
                 entries = feed["entries"]
                 is_paginated = False
-
-        for e in entries:
-            e['image'] = get_image(e['summary'])
-            e['credit'], e['summary'] = get_credit_summary(e['summary'])
 
         context.update({
             'instance': instance,
