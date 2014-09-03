@@ -6,28 +6,21 @@
 {% addtoblock "js" %}
     <script type="text/javascript" src="{{ STATIC_URL }}/cmsplugin_feed/js/responsive-containers.min.js"></script>
 {% endaddtoblock %}
-
+{% spaceless %}
 {% if feed_entries %}
   <div class="media-feed clearfix">
     <h2 class="feed-title">{{ instance.name }}</h2>
 
     {% if is_paginated %}
       {% for item in feed_entries.object_list %}
-
-
           {% include "cmsplugin_feed/item.html" %}
-
-
       {% endfor %}
     {% else %}
       {% for item in feed_entries %}
-
-
           {% include "cmsplugin_feed/item.html" %}
-
-
       {% endfor %}
     {% endif %}
 
   </div>
 {% endif %}
+{% endspaceless %}
