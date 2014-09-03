@@ -8,8 +8,8 @@
       <div class="feed-item-image">                                   
         <div>                                                       
         <img class="feed-item-image" src="{{item.image}}"/></div>
-        {% if item.image_credit %}
-          <div class="feed-item-image-credit"> credit </div>              
+        {% if item.credit %}
+          <div class="feed-item-image-credit"> {{ item.credit }} </div>              
         {% endif %}
       </div>                                                          
       {% endif %}
