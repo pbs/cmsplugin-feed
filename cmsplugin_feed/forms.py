@@ -16,4 +16,4 @@ class FeedForm(ModelForm):
         feed = feedparser.parse(feed_url)
         if not feed.version:
             raise ValidationError(_("The feed doesn't have a valid RSS format"))
-        return self.cleaned_data
+        return self.cleaned_data['feed_url']
