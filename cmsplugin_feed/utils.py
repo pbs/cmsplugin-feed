@@ -4,6 +4,7 @@ from textblob import TextBlob
 from urlparse import urlparse
 from HTMLParser import HTMLParser
 from itertools import chain
+import os
 
 
 class MLStripper(HTMLParser):
@@ -24,37 +25,27 @@ def strip_tags(html):
     return s.get_data()
 
 
-def mini(x):
-    if not x:
-        return ""
-    x = re.sub("\n+", " ", x)
-    x = re.sub("\r+", " ", x)
-    x = filter(lambda x: x not in "\n\t\r", x)
-    x = re.sub(" +", " ", x).strip()
-    return x
-
-
-def toString(branch):
-    ret = mini(strip_tags(unicode(branch)))
+def toString(node):
+    ret = re.sub(u"\s+",strip_tags(unicode(node))," ").strip()
     return ret
 
 
 def valid_img_ext(path):
-    image_types = ['bpm', 'gif', 'jpeg', 'jpg', 'png', 'tif', 'tiff']
-    path_ending = path[-4:].lower()
-    for img_type in image_types:
-        if path_ending.endswith(img_type):
-            return True
-    return False
+    image_types = ('bmp', 'gif', 'jpeg', 'jpg', 'png', 'tif', 'tiff')
+    return  os.path.splitext(path)[1][1:] in image_types
 
 def has_verb(line):
+    """ Iterate over the words in the line, tag each one if it is a verb or a 
+    noun or something else. Return True if there is at least a verb """
     blob = TextBlob(line)
     for word, part_of_speech_tag in blob.tags:
         if part_of_speech_tag[:2] == "VB":
             return True
     return False
 
-def slice_from_keywords(line):
+def get_credit(line):
+    """ Extract a substring as large as possible that starts with one of the 
+    hardcoded keywords. This is used to shorten the image credit description """
     line_lower = line.lower()
     keywords = ["via ", "illustrated ", "photo ",
                 "image credit:", "credit:", "image "]
@@ -69,7 +60,7 @@ def slice_from_keywords(line):
     return line
 
 def filter_sentence(line):
-    credit = slice_from_keywords(line)
+    credit = get_credit(line)
     if has_verb(credit):
         return "", ""
     return line, credit
