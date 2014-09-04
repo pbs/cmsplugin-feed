@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+Revision 763258b (04.09.2014, 09:15 UTC)
+----------------------------------------
+
+* LUN-1111
+
+  * strip whitespaces from feed url.
+
+No other commits.
+
 Revision 7535b33 (06.08.2014, 13:40 UTC)
 ----------------------------------------
 
