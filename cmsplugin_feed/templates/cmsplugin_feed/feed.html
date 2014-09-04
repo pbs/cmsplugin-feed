@@ -1,32 +1,26 @@
-<h1>{{ instance.name }}</h1>
-{% if is_paginated%}
-    <div class="feed">
-        {% for item in feed_entries.object_list %}
-            <h2><a href='{{ item.link}}'>{{ item.title }}</a></h2>
-            {{ item.summary|safe }}
-        {% endfor %}
-    </div>
-    
-    <div class="pagination">
-        <span class="step-links">
-            {% if feed_entries.has_previous %}
-                <a href="?feed_{{ instance.id }}_page={{ feed_entries.previous_page_number }}">previous</a>
-            {% endif %}
-    
-            <span class="current">
-                Page {{ feed_entries.number }} of {{ feed_entries.paginator.num_pages }}.
-            </span>
-    
-            {% if feed_entries.has_next %}
-                <a href="?feed_{{ instance.id }}_page={{ feed_entries.next_page_number }}">next</a>
-            {% endif %}
-        </span>
-    </div>
-{% else %}
-    <div class="feed">
-        {% for item in feed_entries %}
-            <h2><a href='{{ item.link}}'>{{ item.title }}</a></h2>
-            {{ item.summary|safe }}
-        {% endfor %}
-    </div>
+{% load sekizai_tags %}
+{% addtoblock "css" %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/cmsplugin_feed/css/feed.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/cmsplugin_feed/css/feed-item.css">
+{% endaddtoblock %}
+{% addtoblock "js" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}/cmsplugin_feed/js/responsive-containers.min.js"></script>
+{% endaddtoblock %}
+{% spaceless %}
+{% if feed_entries %}
+  <div class="media-feed clearfix">
+    <h2 class="feed-title">{{ instance.name }}</h2>
+
+    {% if is_paginated %}
+      {% for item in feed_entries.object_list %}
+          {% include "cmsplugin_feed/item.html" %}
+      {% endfor %}
+    {% else %}
+      {% for item in feed_entries %}
+          {% include "cmsplugin_feed/item.html" %}
+      {% endfor %}
+    {% endif %}
+
+  </div>
 {% endif %}
+{% endspaceless %}

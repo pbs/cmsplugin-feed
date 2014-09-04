@@ -1,0 +1,32 @@
+{% load truncatechars %}
+  <div class="feed-item-container" data-squery="min-width:479px=feed-item-ge480px max-width:480px=feed-item-le479px max-width:321px=feed-item-le320px">
+    <div class="feed-item-entry">                                       
+      <a class="feed-item-titletop" href="{{item.link}}">
+        {{ item.title }} 
+      </a>                                                          
+      {% if item.image %}
+      <div class="feed-item-image">                                   
+        <div>                                                       
+        <img class="feed-item-image" src="{{item.image}}"/></div>
+        {% if item.credit %}
+          <div class="feed-item-image-credit"> {{ item.credit|truncatechars:60 }} </div>
+        {% endif %}
+      </div>                                                          
+      {% endif %}
+                                                                      
+      <a class="feed-item-titleinline" href="{{item.link}}" >
+        {{ item.title }}
+      </a>                                                          
+      <div class="feed-item-description">
+        {% if item.image %}
+          {{ item.summary|truncatechars:120|safe }}
+        {% else %}
+          {{ item.summary|truncatechars:170|safe }}
+        {% endif %}
+      </div>                                                          
+      <div class="feed-item-read-more">                               
+        <a href="http://spiblog.pbs.org/2014/08/how-to-tweet-all-day-without-losing.html"> read more > </a>
+      </div>                                                          
+    <span class="feed-item-clear"> </span>                              
+    </div>                                                              
+  </div>             
