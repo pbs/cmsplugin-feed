@@ -1,5 +1,6 @@
 from functools import wraps
-
+from cmsplugin_feed.utils import strip_tags
+import re
 
 def apply(f):
     @wraps(f)
@@ -27,6 +28,11 @@ def add_image_hrefs(feed):
     return feed
 
 
-FEED_PROCESSORS = (add_image_hrefs,)
+def fix_summary(feed):
+    entries = feed['entries']
+    for entry in entries:
+        entry['summary'] = re.sub(u"\s+", " ", strip_tags(entry['summary']))
+    return feed
 
 
+FEED_PROCESSORS = (add_image_hrefs, fix_summary)
