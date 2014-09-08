@@ -1,5 +1,5 @@
 from functools import wraps
-from cmsplugin_feed.utils import strip_tags, get_image
+from cmsplugin_feed.utils import strip_tags, get_image, prioritize_jpeg
 import re
 
 
@@ -37,12 +37,8 @@ def add_image_hrefs(feed):
 
         elif ('media_content' in entry
                 and entry['media_content']
-                and isinstance(entry['media_content'], list)
-                and 'url' in entry['media_content'][0]):
-            url = re.sub('&', '&#38;', entry['media_content'][0]['url'])
-            entry['image'] = url
-            #fix ampersand that feedparser and browser seem to replace
-            # maybe choose jpeg over gif
+                and isinstance(entry['media_content'], list)):
+            entry['image'] = prioritize_jpeg(entry['media_content'])
     return feed
 
 
