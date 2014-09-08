@@ -14,20 +14,13 @@
     color: #767676;
 }
 .feed-item-image{
-    width: 140px;
+    max-width: 140px !important;
     float: left;
     padding-right: 15px;
 }
 .feed-item-entry{
     background-color: white;
     padding-bottom: 20px;
-}
-.feed-item-image-credit{
-    font-style: italic;
-    font-weight: lighter;
-    font-size: 12px;
-    line-height: 20px;
-    color: #767676;
 }
 .feed-item-read-more {
     text-align: right;
@@ -43,7 +36,7 @@
 }
 .feed-item-le320px .feed-item-image
 {
-    width: 132px;
+    max-width: 132px;
 }
 
 .feed-item-ge480px .feed-item-titletop

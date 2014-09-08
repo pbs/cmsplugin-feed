@@ -23,8 +23,15 @@ def add_image_hrefs(feed):
                 if link.get('type') in supported_image_types:
                     entry['image'] = link.get('href')
                     break
-        elif isinstance(entry['image'], dict) and 'href' in entry['image']:
+        if 'image' in entry and isinstance(entry['image'], dict) and 'href' in entry['image']:
             entry['image'] = entry['image'].get('href')
+        elif 'media_thumbnail' in entry and entry['media_thumbnail'] and 'url' in entry['media_thumbnail'][0]:
+            entry['image'] = entry['media_thumbnail'][0]['url']
+        elif 'media_content' in entry and entry['media_content']:
+            url = re.sub('&','&#38;',entry['media_content'][0]['url'])
+            entry['image'] = url
+            #fix ampersand that feedparser and browser seem to replace
+            # maybe choose jpeg over gif            
     return feed
 
 

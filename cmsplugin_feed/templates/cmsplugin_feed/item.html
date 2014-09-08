@@ -5,13 +5,7 @@
         {{ item.title }} 
       </a>                                                          
       {% if item.image %}
-      <div class="feed-item-image">                                   
-        <div>                                                       
-        <img class="feed-item-image" src="{{item.image}}"/></div>
-        {% if item.credit %}
-          <div class="feed-item-image-credit"> {{ item.credit|truncatechars:60 }} </div>
-        {% endif %}
-      </div>                                                          
+        <img class="feed-item-image" src="{{item.image}}"/>
       {% endif %}
                                                                       
       <a class="feed-item-titleinline" href="{{item.link}}" >
