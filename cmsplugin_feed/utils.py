@@ -4,6 +4,7 @@ from urlparse import urlparse
 import os
 from cmsplugin_feed.settings import IMAGE_TYPES
 from collections import defaultdict
+import re
 
 
 class MLStripper(HTMLParser):
