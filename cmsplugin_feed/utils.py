@@ -21,11 +21,13 @@ def strip_tags(html):
     s.feed(html)
     return s.get_data()
 
+
 def is_small(img):
-    for key, value in img.attrs: 
+    for key, value in img.attrs:
         if key in (u'height', u'width') and value == u'1':
             return True
     return False
+
 
 def is_valid_img_ext(img):
     image_types = ('bmp', 'gif', 'jpeg', 'jpg', 'png', 'tif', 'tiff')
@@ -33,9 +35,10 @@ def is_valid_img_ext(img):
     path = urlparse(img.get('src')).path
     return os.path.splitext(path)[1][1:] in image_types
 
+
 def get_image(raw_html):
     tree = BeautifulSoup(raw_html)
     for img in tree.findAll('img'):
         if not is_small(img) and is_valid_img_ext(img):
-            return img.get('src') 
-    return None 
+            return img.get('src')
+    return None
