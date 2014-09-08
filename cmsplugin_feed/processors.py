@@ -1,5 +1,5 @@
 from functools import wraps
-from cmsplugin_feed.utils import strip_tags
+from cmsplugin_feed.utils import strip_tags, get_image
 import re
 
 def apply(f):
@@ -27,13 +27,24 @@ def add_image_hrefs(feed):
             entry['image'] = entry['image'].get('href')
         elif 'media_thumbnail' in entry and entry['media_thumbnail'] and 'url' in entry['media_thumbnail'][0]:
             entry['image'] = entry['media_thumbnail'][0]['url']
-        elif 'media_content' in entry and entry['media_content']:
+        elif 'media_content' in entry and entry['media_content'] and 'url' in entry['media_content'][0]:
             url = re.sub('&','&#38;',entry['media_content'][0]['url'])
             entry['image'] = url
             #fix ampersand that feedparser and browser seem to replace
             # maybe choose jpeg over gif            
     return feed
 
+def add_image_from_content(feed):
+    entries = feed['entries']
+    for entry in entries:
+        if 'image' not in entry or not entry['image']:
+            text = entry['summary']
+            if 'content' in entry:
+                text += ''.join([e.value for e in entry['content']])
+            img = get_image(text)
+            if img:
+                entry['image'] = img
+    return feed
 
 def fix_summary(feed):
     entries = feed['entries']
@@ -41,5 +52,5 @@ def fix_summary(feed):
         entry['summary'] = re.sub(u"\s+", " ", strip_tags(entry['summary']))
     return feed
 
-
-FEED_PROCESSORS = (add_image_hrefs, fix_summary)
+# keep the order of the processors
+FEED_PROCESSORS = (add_image_hrefs, add_image_from_content, fix_summary)
