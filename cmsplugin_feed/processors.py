@@ -24,13 +24,19 @@ def add_image_hrefs(feed):
                 if link.get('type') in supported_image_types:
                     entry['image'] = link.get('href')
                     break
-        try:
-            url = entry['image'].get('href')
-            url = url or entry['media_thumbnail'][0]['url']
-            url = url or prioritize_jpeg(entry['media_content'])
-            entry['image'] = url
-        except (KeyError, IndexError):
-            pass
+
+        image_getters = (
+            lambda e: e['image'] if isinstance(e['image'], basestring) else None,
+            lambda e: e['image']['href'] if e['image'] else None,
+            lambda e: prioritize_jpeg(e['media_thumbnail']),
+            lambda e: prioritize_jpeg(e['media_content']))
+
+        for idx, getter in enumerate(image_getters): 
+            try:
+                entry['image'] = getter(entry)
+                if entry['image']: break
+            except (KeyError, IndexError):
+                pass
     return feed
 
 

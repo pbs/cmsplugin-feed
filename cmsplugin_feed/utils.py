@@ -49,8 +49,7 @@ def prioritize_jpeg(img_list):
     for img in img_list:
         if 'url' in img:
             ext = os.path.splitext(img['url'])[1][1:]
-            if ext not in first_of_every_kind:
-                first_of_every_kind[ext] = img['url']
+            first_of_every_kind.setdefault(ext, img['url'])
 
     if 'gif' in first_of_every_kind:
         ampersand = '&#38;'
@@ -60,3 +59,4 @@ def prioritize_jpeg(img_list):
     for ext in IMAGE_TYPES:
         if ext in first_of_every_kind:
             return first_of_every_kind[ext]
+    return None
