@@ -8,3 +8,4 @@ from django.conf import settings
 # default is 3600s (1 hour)
 CMSPLUGIN_FEED_CACHE_TIMEOUT = getattr(settings,
                                        'CMSPLUGIN_FEED_CACHE_TIMEOUT', 3600)
+IMAGE_TYPES = ('jpg', 'jpeg', 'png', 'bmp', 'gif')

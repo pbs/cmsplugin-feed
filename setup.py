@@ -5,6 +5,7 @@ DEPENDENCIES = [
     'django >=1.4.1, <1.5',
     'django-cms >=2.3.1, <2.3.6',
     'feedparser >=5.1.1',
+    'BeautifulSoup >=3.2.1',
 ]
 
 
