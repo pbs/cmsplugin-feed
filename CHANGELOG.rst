@@ -1,6 +1,21 @@
 CHANGELOG
 =========
 
+Revision 0853cb6 (08.09.2014, 15:56 UTC)
+----------------------------------------
+
+No new issues.
+
+* Misc commits
+
+  * forgot import re
+  * refactoring
+  * try except instead of checking everything
+  * prioritize jpeg over other
+  * PEP8 fixes and other minor fixes.
+  * Parse image from summary/content if not in cms tags.
+  * Get RSS thumbnails from tags properly
+
 Revision 271e9a6 (04.09.2014, 13:16 UTC)
 ----------------------------------------
 
