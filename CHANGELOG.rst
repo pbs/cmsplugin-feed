@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+Revision c95c7a4 (16.09.2014, 08:57 UTC)
+----------------------------------------
+
+No new issues.
+
+* Misc commits
+
+  * fix READ MORE link
+
 Revision 0853cb6 (08.09.2014, 15:56 UTC)
 ----------------------------------------
 
