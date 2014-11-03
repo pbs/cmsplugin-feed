@@ -1,26 +1,27 @@
-{% load truncatechars %}
+{% load feed_filters %}
+
   <div class="feed-item-container" data-squery="min-width:479px=feed-item-ge480px max-width:480px=feed-item-le479px max-width:321px=feed-item-le320px">
-    <div class="feed-item-entry">                                       
+    <div class="feed-item-entry">
       <a class="feed-item-titletop" href="{{item.link}}">
-        {{ item.title }} 
-      </a>                                                          
+        {{ item.title }}
+      </a>
       {% if item.image %}
         <img class="feed-item-image" src="{{item.image}}"/>
       {% endif %}
-                                                                      
+
       <a class="feed-item-titleinline" href="{{item.link}}" >
         {{ item.title }}
-      </a>                                                          
+      </a>
       <div class="feed-item-description">
         {% if item.image %}
-          {{ item.summary|truncatechars:120|safe }}
+          {{ item.summary|smart_truncate:120|safe }}
         {% else %}
-          {{ item.summary|truncatechars:170|safe }}
+          {{ item.summary|smart_truncate:170|safe }}
         {% endif %}
-      </div>                                                          
-      <div class="feed-item-read-more">                               
+      </div>
+      <div class="feed-item-read-more">
         <a href="{{item.link}}"> read more > </a>
-      </div>                                                          
-    <span class="feed-item-clear"> </span>                              
-    </div>                                                              
-  </div>             
+      </div>
+    <span class="feed-item-clear"> </span>
+    </div>
+  </div>
