@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+Revision 42e7cb4 (13.01.2015, 09:31 UTC)
+----------------------------------------
+
+* LUN-1854
+
+  * ellipsis should not show up in the middle of the word.
+
+No other commits.
+
 Revision c95c7a4 (16.09.2014, 08:57 UTC)
 ----------------------------------------
 
