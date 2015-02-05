@@ -6,11 +6,10 @@
 }
 .feed-item-titletop{
     clear: left;
+    font-weight: normal;
     display: block;
 }
 .feed-item-description{
-    font-size: 12px;
-    line-height: 20px;
     color: #767676;
 }
 .feed-item-image{
@@ -26,8 +25,8 @@
     text-align: right;
 }
 .feed-item-read-more a {
-    font-size: 12px;
-    line-height: 20px;
+    font-size: 16px;
+    line-height: 22px;
     color: #767676;
 }
 .feed-item-le479px .feed-item-titleinline /* less or equal */
