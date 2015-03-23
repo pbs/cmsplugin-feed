@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+Revision 9342441 (23.03.2015, 16:59 UTC)
+----------------------------------------
+
+* LUN-2088
+
+  * old font sizes removed
+  * cmsplugin_feed fonts and template updates
+
+No other commits.
+
 Revision 42e7cb4 (13.01.2015, 09:31 UTC)
 ----------------------------------------
 
