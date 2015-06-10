@@ -1,29 +1,28 @@
 {% load feed_filters %}
 
-  <div class="feed-item-container" data-squery="min-width:479px=feed-item-ge480px max-width:480px=feed-item-le479px max-width:321px=feed-item-le320px">
-    <div class="feed-item-entry">
-      <h3>
-        <a class="feed-item-titletop" href="{{item.link}}">
-          {{ item.title }}
-        </a>
-      </h3>
-      {% if item.image %}
-        <img class="feed-item-image" src="{{item.image}}"/>
-      {% endif %}
-
-      <a class="feed-item-titleinline" href="{{item.link}}" >
+<div class="feed-item-container" data-squery="min-width:479px=feed-item-ge480px max-width:480px=feed-item-le479px max-width:321px=feed-item-le320px">
+  <div class="feed-item-entry {% if item.image %} with-image {% endif %}">
+    <h3>
+      <a class="feed-item-titletop" href="{{item.link}}">
         {{ item.title }}
       </a>
-      <p class="feed-item-description">
-        {% if item.image %}
-          {{ item.summary|smart_truncate:120|safe }}
-        {% else %}
-          {{ item.summary|smart_truncate:170|safe }}
-        {% endif %}
-      </p>
-      <div class="feed-item-read-more">
-        <a href="{{item.link}}"> read more > </a>
-      </div>
-    <span class="feed-item-clear"> </span>
+    </h3>
+
+    {% if item.image %}
+      <img class="feed-item-image" src="{{item.image}}"/>
+    {% endif %}
+
+    <p class="feed-item-description">
+      {% if item.image %}
+        {{ item.summary|smart_truncate:120|safe }}
+      {% else %}
+        {{ item.summary|smart_truncate:170|safe }}
+      {% endif %}
+    </p>
+
+    <div class="feed-item-read-more">
+      <a href="{{item.link}}"> read more > </a>
     </div>
+    <span class="feed-item-clear"> </span>
   </div>
+</div>
