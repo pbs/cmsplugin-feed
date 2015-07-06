@@ -1,5 +1,4 @@
 import os.path
-import cmsplugin_feed.cms_plugins
 
 
 def test_image_hrefs(parsed_feed):
@@ -12,6 +11,7 @@ def test_image_hrefs(parsed_feed):
 
 
 def test_invalid_feed():
+    import cmsplugin_feed.cms_plugins
     invalid_path = os.path.join(".", "fixtures", "invalid.xml")
     feed = cmsplugin_feed.cms_plugins.fetch_parsed_feed(invalid_path)
     assert True, "No exception has been raised"

@@ -12,7 +12,6 @@ DATABASES = {
 }
 INSTALLED_APPS = [
     'mptt',
-    'south',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sites',
@@ -51,5 +50,5 @@ CMS_APPHOOKS = ()
 
 # MEDIA_ROOT = os.path.abspath( os.path.join(TMP_ROOT, 'media') )
 # MEDIA_URL = '/media/'
-# STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 SECRET_KEY = '3e7704d1-eb82-43dc-b322-a41e7972a060'

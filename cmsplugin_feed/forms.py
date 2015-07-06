@@ -24,6 +24,7 @@ class FeedForm(ModelForm):
         widgets = {
             'feed_url': StripURLWidget
         }
+        exclude = ()
 
     def clean_feed_url(self):
         feed_url = self.cleaned_data['feed_url']

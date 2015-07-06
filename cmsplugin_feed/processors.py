@@ -31,10 +31,12 @@ def add_image_hrefs(feed):
             lambda e: prioritize_jpeg(e['media_thumbnail']),
             lambda e: prioritize_jpeg(e['media_content']))
 
-        for idx, getter in enumerate(image_getters): 
+        for idx, getter in enumerate(image_getters):
             try:
-                entry['image'] = getter(entry)
-                if entry['image']: break
+                image = getter(entry)
+                if image:
+                    entry['image'] = image
+                    break
             except (KeyError, IndexError):
                 pass
     return feed
