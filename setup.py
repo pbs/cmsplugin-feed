@@ -77,8 +77,5 @@ setup(
             'Topic :: Utilities',
             'License :: OSI Approved :: BSD License',
             ],
-        setup_requires=[
-            's3sourceuploader',
-        ],
         install_requires=DEPENDENCIES,
 )
