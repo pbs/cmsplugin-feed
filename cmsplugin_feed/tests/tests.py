@@ -3,7 +3,6 @@ import mock
 from unittest import TestCase
 from xml.sax import SAXException
 from feedparser import CharacterEncodingOverride
-from ..cms_plugins import fetch_parsed_feed
 
 
 class CMSPluginFeedTests(TestCase):
@@ -13,6 +12,7 @@ class CMSPluginFeedTests(TestCase):
         with mock.patch('feedparser.parse') as mock_parse:
             mock_parse.return_value = mock.Mock(
                 bozo=1, bozo_exception=SAXException('fake error'))
+            from ..cms_plugins import fetch_parsed_feed
             feed = fetch_parsed_feed(feed_url)
             self.assertTrue(feed is None)
 
@@ -22,6 +22,7 @@ class CMSPluginFeedTests(TestCase):
             mock_parse.return_value = mock.Mock(
                 bozo=1, bozo_exception=CharacterEncodingOverride())
             mock_parse.return_value.__getitem__ = lambda x, y: []
+            from ..cms_plugins import fetch_parsed_feed
             feed = fetch_parsed_feed(feed_url)
             self.assertTrue(feed is not None)
 
@@ -30,5 +31,6 @@ class CMSPluginFeedTests(TestCase):
         with mock.patch('feedparser.parse') as mock_parse:
             mock_parse.return_value = mock.Mock(bozo=0)
             mock_parse.return_value.__getitem__ = lambda x, y: []
+            from ..cms_plugins import fetch_parsed_feed
             feed = fetch_parsed_feed(feed_url)
             self.assertTrue(feed is not None)

@@ -2,7 +2,6 @@
 PACKAGE_NAME = 'cmsplugin_feed'
 PACKAGE_DIR = PACKAGE_NAME
 DEPENDENCIES = [
-    'django >=1.4.1, <1.5',
     'django-cms >=2.3.1, <2.3.6',
     'feedparser >=5.1.1',
     'BeautifulSoup >=3.2.1',
@@ -78,8 +77,5 @@ setup(
             'Topic :: Utilities',
             'License :: OSI Approved :: BSD License',
             ],
-        setup_requires=[
-            's3sourceuploader',
-        ],
         install_requires=DEPENDENCIES,
 )

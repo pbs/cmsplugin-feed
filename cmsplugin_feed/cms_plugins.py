@@ -1,7 +1,7 @@
 import feedparser
 from xml.sax import SAXException
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.core.cache import cache
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 

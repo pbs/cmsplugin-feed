@@ -1,2 +1,2 @@
-import tests
-import test_processors
+from .tests import *
+from .test_processors import *
