@@ -1,6 +1,19 @@
 CHANGELOG
 =========
 
+Revision cda659b (20.07.2015, 07:35 UTC)
+----------------------------------------
+
+No new issues.
+
+* Misc commits
+
+  * tox: Don't allow django 1.8 prereleases
+  * tox: Don't allow django 1.8 prereleases
+  * package no longer uploaded to S3
+  * django 1.7 upgrade: added migrations; added all tests in tox; fixed bug for image processor
+  * Django 1.6 upgrade: fixed imports and urlfield
+
 Revision 9342441 (23.03.2015, 16:59 UTC)
 ----------------------------------------
 
