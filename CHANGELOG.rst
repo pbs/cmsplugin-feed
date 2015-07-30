@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+Revision 6627708 (30.07.2015, 09:07 UTC)
+----------------------------------------
+
+* LUN-2154
+
+  * optimize rss feed plugin
+
+No other commits.
+
 Revision cda659b (20.07.2015, 07:35 UTC)
 ----------------------------------------
 
