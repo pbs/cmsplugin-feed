@@ -44,6 +44,7 @@ class FeedPlugin(CMSPluginBase):
     name = _('RSS Feed')
     form = FeedForm
     render_template = 'cmsplugin_feed/feed.html'
+    admin_preview = False
 
     def render(self, context, instance, placeholder):
         feed = get_cached_or_latest_feed(instance)
