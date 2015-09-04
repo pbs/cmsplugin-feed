@@ -1,4 +1,4 @@
-from django.template.loader import BaseLoader
+from django.template.loaders.base import Loader as BaseLoader
 
 
 class MockLoader(BaseLoader):

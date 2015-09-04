@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import os
 import tempfile
 DEBUG = True
@@ -26,24 +26,33 @@ INSTALLED_APPS = [
 
 ROOT_URLCONF = 'tests.urls'
 
-TEMPLATE_CONTEXT_PROCESSORS = [
-    "django.contrib.auth.context_processors.auth",
-    'django.contrib.messages.context_processors.messages',
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.request",
-    "django.core.context_processors.media",
-    'django.core.context_processors.csrf',
-    "cms.context_processors.media",
-    "sekizai.context_processors.sekizai",
-    "django.core.context_processors.static",
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'OPTIONS': {
+            'context_processors': (
+                "django.contrib.auth.context_processors.auth",
+                'django.contrib.messages.context_processors.messages',
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.template.context_processors.media",
+                'django.template.context_processors.csrf',
+                "cms.context_processors.media",
+                "sekizai.context_processors.sekizai",
+                "django.template.context_processors.static",
+            ),
+            'loaders': (
+                'cmsplugin_feed.tests.utils.MockLoader',
+            ),
+        },
+    },
 ]
+
 CMS_TEMPLATES = [
     ('template.html', 'template.html'),
 ]
-TEMPLATE_LOADERS = (
-    'cmsplugin_feed.tests.utils.MockLoader',
-)
+
 CMS_MODERATOR = False
 CMS_PERMISSION = False
 CMS_APPHOOKS = ()
