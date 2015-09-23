@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+Revision 61fd87f (23.09.2015, 15:29 UTC)
+----------------------------------------
+
+No new issues.
+
+* Misc commits
+
+  * Django 1.8 upgrade: updated test settings
+
 Revision 471ccf8 (11.09.2015, 13:57 UTC)
 ----------------------------------------
 
