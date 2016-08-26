@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+Revision 3abfe41 (26.08.2016, 11:17 UTC)
+----------------------------------------
+
+No new issues.
+
+* Misc commits
+
+  * Fix tests for new pytest and pip install.
+
 Revision 61fd87f (23.09.2015, 15:29 UTC)
 ----------------------------------------
 
