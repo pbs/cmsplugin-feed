@@ -1,4 +1,7 @@
+import feedparser
 from functools import wraps
+from xml.sax import SAXException
+
 from cmsplugin_feed.utils import strip_tags, get_image, prioritize_jpeg
 import re
 
@@ -63,3 +66,13 @@ def fix_summary(feed):
 
 # keep the order of the processors
 FEED_PROCESSORS = (add_image_hrefs, add_image_from_content, fix_summary)
+
+
+@apply
+def fetch_parsed_feed(feed_url):
+    """Returns the parsed feed if not malformed,"""
+    feed = feedparser.parse(feed_url)
+    parse_error = hasattr(feed, 'bozo_exception') and (
+        isinstance(feed.bozo_exception, SAXException))
+    if not feed.bozo or not parse_error:
+        return feed

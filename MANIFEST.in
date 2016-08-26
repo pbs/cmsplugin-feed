@@ -5,5 +5,5 @@ include MANIFEST.in
 include README
 include AUTHORS
 recursive-include docs *
+include cmsplugin_feed/tests/fixtures/*.xml
 recursive-include cmsplugin_feed *
-

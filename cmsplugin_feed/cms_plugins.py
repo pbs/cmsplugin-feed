@@ -1,6 +1,3 @@
-import feedparser
-from xml.sax import SAXException
-
 from django.utils.translation import ugettext_lazy as _
 from django.core.cache import cache
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
@@ -11,8 +8,7 @@ from cms.plugin_pool import plugin_pool
 from cmsplugin_feed.models import Feed
 from cmsplugin_feed.forms import FeedForm
 from cmsplugin_feed.settings import CMSPLUGIN_FEED_CACHE_TIMEOUT
-
-import cmsplugin_feed.processors
+from cmsplugin_feed.processors import fetch_parsed_feed
 
 
 def get_cached_or_latest_feed(instance):
@@ -27,16 +23,6 @@ def get_cached_or_latest_feed(instance):
         cache.set(feed_key, valid_parsed_feed, CMSPLUGIN_FEED_CACHE_TIMEOUT)
         return valid_parsed_feed
     return cached_feed() or updated_feed()
-
-
-@cmsplugin_feed.processors.apply
-def fetch_parsed_feed(feed_url):
-    """Returns the parsed feed if not malformed,"""
-    feed = feedparser.parse(feed_url)
-    parse_error = hasattr(feed, 'bozo_exception') and (
-        isinstance(feed.bozo_exception, SAXException))
-    if not feed.bozo or not parse_error:
-        return feed
 
 
 class FeedPlugin(CMSPluginBase):

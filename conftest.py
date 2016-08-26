@@ -1,13 +1,13 @@
 import os
 import os.path
-
-import cmsplugin_feed.cms_plugins
 import pytest
+
+from cmsplugin_feed.processors import fetch_parsed_feed
 
 
 def _fixtures_path():
     here = os.path.dirname(__file__)
-    return os.path.join(here, "fixtures")
+    return os.path.join(here, "cmsplugin_feed", "tests", "fixtures")
 
 
 def _feeds_fixtures():
@@ -16,6 +16,6 @@ def _feeds_fixtures():
     return filter(os.path.isfile, files)
 
 
-@pytest.fixture(scope="module", params=_feeds_fixtures())
+@pytest.fixture(scope='module', params=_feeds_fixtures())
 def parsed_feed(request):
-    return cmsplugin_feed.cms_plugins.fetch_parsed_feed(request.param)
+    return fetch_parsed_feed(request.param)
