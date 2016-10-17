@@ -33,8 +33,10 @@ def is_small(img):
 
 
 def is_valid_img_ext(img):
-
-    path = urlparse(img.get('src')).path
+    try:
+        path = urlparse(img.get('src')).path
+    except AttributeError:
+        return False
     return os.path.splitext(path)[1][1:] in IMAGE_TYPES
 
 
