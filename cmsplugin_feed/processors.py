@@ -31,9 +31,12 @@ def add_image_hrefs(feed):
         if 'image' not in entry:
             try:
                 for link in entry.get('links', []):
-                    if link.get('type') in supported_image_types:
-                        entry['image'] = link.get('href')
-                        break
+                    try:
+                        if link.get('type') in supported_image_types:
+                            entry['image'] = link.get('href')
+                            break
+                    except AttributeError:
+                        continue
             except (TypeError, AttributeError):
                 pass
 
