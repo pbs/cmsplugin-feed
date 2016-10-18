@@ -17,16 +17,28 @@ def apply(f):
     return wrapper
 
 
+def remove_invalid(feed):
+    entries = feed.get('entries', [])
+    feed['entries'] = [e for e in entries if isinstance(e, dict)]
+    return feed
+
+
 def add_image_hrefs(feed):
     """ WARNING! it changes the feed arg """
     supported_image_types = ('image/jpeg', 'image/png')
-    entries = feed['entries']
+    entries = feed.get('entries', [])
     for entry in entries:
         if 'image' not in entry:
-            for link in entry.get('links', []):
-                if link.get('type') in supported_image_types:
-                    entry['image'] = link.get('href')
-                    break
+            try:
+                for link in entry.get('links', []):
+                    try:
+                        if link.get('type') in supported_image_types:
+                            entry['image'] = link.get('href')
+                            break
+                    except AttributeError:
+                        continue
+            except (TypeError, AttributeError):
+                pass
 
         image_getters = (
             lambda e: e['image'] if isinstance(e['image'], basestring) else None,
@@ -34,24 +46,27 @@ def add_image_hrefs(feed):
             lambda e: prioritize_jpeg(e['media_thumbnail']),
             lambda e: prioritize_jpeg(e['media_content']))
 
-        for idx, getter in enumerate(image_getters):
+        for getter in image_getters:
             try:
                 image = getter(entry)
                 if image:
                     entry['image'] = image
                     break
-            except (KeyError, IndexError):
+            except (KeyError, IndexError, TypeError):
                 pass
     return feed
 
 
 def add_image_from_content(feed):
-    entries = feed['entries']
+    entries = feed.get('entries', [])
     for entry in entries:
         if 'image' not in entry or not entry['image']:
-            text = entry['summary']
+            text = entry.get('summary', '')
             if 'content' in entry:
-                text += ''.join([e.value for e in entry['content']])
+                try:
+                    text += ''.join([e.value for e in entry['content']])
+                except (TypeError, AttributeError):
+                    pass
             img = get_image(text)
             if img:
                 entry['image'] = img
@@ -59,13 +74,14 @@ def add_image_from_content(feed):
 
 
 def fix_summary(feed):
-    entries = feed['entries']
+    entries = feed.get('entries', [])
     for entry in entries:
-        entry['summary'] = re.sub(u"\s+", " ", strip_tags(entry['summary']))
+        summary = entry.get('summary', '')
+        entry['summary'] = re.sub(r"\s+", " ", strip_tags(summary))
     return feed
 
 # keep the order of the processors
-FEED_PROCESSORS = (add_image_hrefs, add_image_from_content, fix_summary)
+FEED_PROCESSORS = (remove_invalid, add_image_hrefs, add_image_from_content, fix_summary)
 
 
 @apply
