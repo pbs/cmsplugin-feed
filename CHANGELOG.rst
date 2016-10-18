@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+Revision 1f8a26b (18.10.2016, 07:39 UTC)
+----------------------------------------
+
+* LUN-3295
+
+  * Better handling for incorrect links. Review.
+  * Handle missing data in feed entries.
+
+No other commits.
+
 Revision 3abfe41 (26.08.2016, 11:17 UTC)
 ----------------------------------------
 
