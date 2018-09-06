@@ -58,7 +58,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'bdist_wininst':
 
 setup(
         name='cmsplugin-feed',
-        version='0.2.1.pbs.10',
+        version='0.2.1.pbs.11',
         description='Adds a plugin based MarkUp System for django-cms',
         author='Yann Malet, gwadeloop',
         author_email='yann.malet@gmail.com',
