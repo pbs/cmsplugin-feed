@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+Revision 391de2b (04.10.2019, 13:31 UTC)
+----------------------------------------
+
+No new issues.
+
+* Misc commits
+
+  * Pin attrs package
+
 Revision 797b1bd (06.09.2018, 12:19 UTC)
 ----------------------------------------
 
